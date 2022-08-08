@@ -64,7 +64,13 @@ module LogStash module PluginMixins module Jdbc
 
     def build_query(db, sql_last_value)
       parameters[:sql_last_value] = sql_last_value
+      parameters[:sql_now] = now(db)
       db[statement, parameters]
+    end
+
+    def now(db)
+      query = db["select NOW()", {}]
+      query.first.values[0]
     end
 
   end
